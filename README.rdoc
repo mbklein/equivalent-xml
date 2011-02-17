@@ -15,17 +15,17 @@ Testing XML output is difficult:
 EquivalentXml for Nokogiri
 
 === Use
-+EquivalentXml.equivalent?(_node_1_, _node_2_, opts = { :element_order => false })+
+  EquivalentXml.equivalent?(node_1, node_2, opts = { :element_order => false })
 
-_node_1_ and _node_2_ can be any Nokogiri::XML::Node descendants. The most common
+node_1 and node_2 can be any Nokogiri::XML::Node descendants. The most common
 use is to compare two Nokogiri::XML::Document instances.
 
-_node_1_ is equivalent to _node_2_ if and only if:
-* _node_1_ and _node_2_ are of the same class
-* _node_1_ and _node_2_ are in the same namespace
-* _node_1_ and _node_2_ have the same number of child nodes
+node_1 is equivalent to node_2 if and only if:
+* node_1 and node_2 are of the same class
+* node_1 and node_2 are in the same namespace
+* node_1 and node_2 have the same number of child nodes
   (excluding ProcessingInstructions, Comments and empty Text nodes)
-* For each child of _node_1_, there is exactly one equal child of _node_2_
+* For each child of node_1, there is exactly one equal child of node_2
 * If called with :element_order => true, equivalent child elements must be
   in the same relative position in order to be considered equal
 
