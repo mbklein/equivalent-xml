@@ -98,4 +98,10 @@ describe EquivalentXml do
     EquivalentXml.equivalent?(doc1,doc2).should == true
   end
   
+  it "should properly handle a mixture of text and element nodes" do
+    doc1 = Nokogiri::XML("<doc xmlns='foo:bar'><phrase>This phrase <b>has bold text</b> in it.</phrase></doc>")
+    doc2 = Nokogiri::XML("<doc xmlns='foo:bar'><phrase>This phrase in <b>has bold text</b> it.</phrase></doc>")
+    EquivalentXml.equivalent?(doc1,doc2).should == false
+  end
+
 end
