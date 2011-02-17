@@ -78,7 +78,7 @@ module EquivalentXml
     
       nodeset_1 = node_1.children.reject { |child| ignore_proc.call(child) }
       nodeset_2 = node_2.children.reject { |child| ignore_proc.call(child) }
-      result = self.compare_nodesets(nodeset_1,nodeset_2,opts)
+      result = self.compare_nodesets(nodeset_1,nodeset_2,opts,&block)
       
       if node_1.respond_to?(:attribute_nodes)
         attributes_1 = node_1.attribute_nodes
