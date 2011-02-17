@@ -15,8 +15,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "equivalent-xml"
   gem.homepage = "http://github.com/mbklein/equivalent-xml"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Easy equivalency tests for Nokogiri::XML}
+  gem.description = %Q{Compares two Nokogiri::XML::Nodes (Documents, etc.) for certain semantic equivalencies}
   gem.email = "mbklein@gmail.com"
   gem.authors = ["Michael B. Klein"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
@@ -26,21 +26,12 @@ Jeweler::Tasks.new do |gem|
 end
 Jeweler::RubygemsDotOrgTasks.new
 
-require 'rake/testtask'
-Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new do |t|
+  t.pattern = FileList['./spec/**/*_spec.rb']
 end
-
-require 'rcov/rcovtask'
-Rcov::RcovTask.new do |test|
-  test.libs << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
-end
-
-task :default => :test
+  
+task :default => :spec
 
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|
