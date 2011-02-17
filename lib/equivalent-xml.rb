@@ -83,7 +83,7 @@ module EquivalentXml
       if node_1.respond_to?(:attribute_nodes)
         attributes_1 = node_1.attribute_nodes
         attributes_2 = node_2.attribute_nodes
-        result = result && self.compare_nodesets(attributes_1,attributes_2,opts)
+        result = result && self.compare_nodesets(attributes_1,attributes_2,opts,&block)
       end
       result
     end
