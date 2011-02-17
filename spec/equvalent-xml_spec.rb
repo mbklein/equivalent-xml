@@ -1,4 +1,5 @@
 $:.push(File.join(File.dirname(__FILE__),'..','lib'))
+require 'nokogiri'
 require 'equivalent-xml'
 
 describe EquivalentXml do
@@ -48,13 +49,19 @@ describe EquivalentXml do
     EquivalentXml.equivalent?(doc1,doc2).should == false
   end
 
-  it "should normalize simple whitespace" do
+  it "should normalize simple whitespace by default" do
     doc1 = Nokogiri::XML("<doc xmlns='foo:bar'><first>foo  bar baz</first><second>things</second></doc>")
     doc2 = Nokogiri::XML("<doc xmlns='foo:bar'><first>foo bar  baz</first><second>things</second></doc>")
     EquivalentXml.equivalent?(doc1,doc2).should == true
   end
 
-  it "should normalize complex whitespace" do
+  it "shouldn't normalize simple whitespace if :normalize_whitespace => false is specified" do
+    doc1 = Nokogiri::XML("<doc xmlns='foo:bar'><first>foo  bar baz</first><second>things</second></doc>")
+    doc2 = Nokogiri::XML("<doc xmlns='foo:bar'><first>foo bar  baz</first><second>things</second></doc>")
+    EquivalentXml.equivalent?(doc1,doc2, :normalize_whitespace => false).should == false
+  end
+
+  it "should normalize complex whitespace by default" do
     doc1 = Nokogiri::XML("<doc xmlns='foo:bar'><first>foo  bar baz</first><second>things</second></doc>")
     doc2 = Nokogiri::XML(%{<doc xmlns='foo:bar'>
       <second>things</second>
@@ -66,6 +73,18 @@ describe EquivalentXml do
     EquivalentXml.equivalent?(doc1,doc2).should == true
   end
   
+  it "shouldn't normalize complex whitespace if :normalize_whitespace => false is specified" do
+    doc1 = Nokogiri::XML("<doc xmlns='foo:bar'><first>foo  bar baz</first><second>things</second></doc>")
+    doc2 = Nokogiri::XML(%{<doc xmlns='foo:bar'>
+      <second>things</second>
+      <first>
+        foo
+        bar baz
+      </first>
+    </doc>})
+    EquivalentXml.equivalent?(doc1,doc2, :normalize_whitespace => false).should == false
+  end
+
   it "should ignore comment nodes" do
     doc1 = Nokogiri::XML("<doc xmlns='foo:bar'><first>foo  bar baz</first><second>things</second></doc>")
     doc2 = Nokogiri::XML(%{<doc xmlns='foo:bar'>

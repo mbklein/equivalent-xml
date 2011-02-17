@@ -2,13 +2,7 @@ GEM
   remote: http://rubygems.org/
   specs:
     diff-lcs (1.1.2)
-    git (1.2.5)
-    jeweler (1.5.2)
-      bundler (~> 1.0.0)
-      git (>= 1.2.5)
-      rake
     nokogiri (1.4.4)
-    rake (0.8.7)
     rcov (0.9.9)
     rspec (2.5.0)
       rspec-core (~> 2.5.0)
@@ -18,15 +12,12 @@ GEM
     rspec-expectations (2.5.0)
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.5.0)
-    shoulda (2.11.3)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   bundler (~> 1.0.0)
-  jeweler (~> 1.5.2)
   nokogiri
   rcov
   rspec
-  shoulda

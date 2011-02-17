@@ -1,30 +1,45 @@
-require 'nokogiri'
-
 module EquivalentXml
   
   class << self
 
-    def equivalent?(node_1, node_2, opts = { :element_order => false })
+    ELEMENT_NODE                = 1
+    ATTRIBUTE_NODE              = 2
+    TEXT_NODE                   = 3
+    CDATA_SECTION_NODE          = 4
+    ENTITY_REFERENCE_NODE       = 5
+    ENTITY_NODE                 = 6
+    PROCESSING_INSTRUCTION_NODE = 7
+    COMMENT_NODE                = 8
+    DOCUMENT_NODE               = 9
+    DOCUMENT_TYPE_NODE          = 10
+    DOCUMENT_FRAGMENT_NODE      = 11
+    NOTATION_NODE               = 12
+    
+    DEFAULT_OPTS                = { :element_order => false, :normalize_whitespace => true }
+
+    def equivalent?(node_1, node_2, opts = {})
+      opts = DEFAULT_OPTS.merge(opts)
       self.compare_nodes(node_1, node_2, opts)
     end
   
     def compare_nodes(node_1, node_2, opts)
-      if node_1.class != node_2.class
-        return false
-      elsif self.same_namespace?(node_1,node_2) == false
-        return false
-      elsif node_1.is_a?(Nokogiri::XML::Document)
-        return self.compare_documents(node_1,node_2,opts)
-      elsif node_1.is_a?(Nokogiri::XML::Element)
-        return self.compare_elements(node_1,node_2,opts)
-      elsif node_1.is_a?(Nokogiri::XML::Attr)
-        return self.compare_attributes(node_1,node_2)
-      elsif node_1.is_a?(Nokogiri::XML::CDATA)
-        return self.compare_cdata(node_1,node_2)
-      elsif node_1.is_a?(Nokogiri::XML::CharacterData)
-        return self.compare_text(node_1,node_2)
+      if (node_1.class != node_2.class) or self.same_namespace?(node_1,node_2) == false
+        false
       else
-        return self.compare_children(node_1,node_2,opts)
+        case node_1.node_type
+        when DOCUMENT_NODE
+          self.compare_documents(node_1,node_2,opts)
+        when ELEMENT_NODE
+          self.compare_elements(node_1,node_2,opts)
+        when ATTRIBUTE_NODE
+          self.compare_attributes(node_1,node_2,opts)
+        when CDATA_SECTION_NODE
+          self.compare_cdata(node_1,node_2,opts)
+        when TEXT_NODE
+          self.compare_text(node_1,node_2,opts)
+        else
+          self.compare_children(node_1,node_2,opts)
+        end
       end
     end
 
@@ -36,15 +51,19 @@ module EquivalentXml
       (node_1.name == node_2.name) && self.compare_children(node_1,node_2,opts)
     end
     
-    def compare_attributes(node_1, node_2)
+    def compare_attributes(node_1, node_2, opts)
       (node_1.name == node_2.name) && (node_1.value == node_2.value)
     end
     
-    def compare_text(node_1, node_2)
-      node_1.text.strip.gsub(/\s+/,' ') == node_2.text.strip.gsub(/\s+/,' ')
+    def compare_text(node_1, node_2, opts)
+      if opts[:normalize_whitespace]
+        node_1.text.strip.gsub(/\s+/,' ') == node_2.text.strip.gsub(/\s+/,' ')
+      else
+        node_1.text == node_2.text
+      end
     end
     
-    def compare_cdata(node_1, node_2)
+    def compare_cdata(node_1, node_2, opts)
       node_1.text == node_2.text
     end
     
