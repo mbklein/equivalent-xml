@@ -104,4 +104,13 @@ describe EquivalentXml do
     EquivalentXml.equivalent?(doc1,doc2).should == false
   end
 
+  it "should properly handle documents passed in as strings" do
+    doc1 = "<doc xmlns='foo:bar'><first order='1'>foo  bar baz</first><second>things</second></doc>"
+    doc2 = "<doc xmlns='foo:bar'><first order='1'>foo  bar baz</first><second>things</second></doc>"
+
+    doc1 = "<doc xmlns='foo:bar'><first order='1'>foo  bar baz</first><second>things</second></doc>"
+    doc2 = "<doc xmlns='foo:bar'><first order='1'>foo  bar baz quux</first><second>things</second></doc>"
+    EquivalentXml.equivalent?(doc1,doc2).should == false
+  end
+
 end

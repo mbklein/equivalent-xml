@@ -1,25 +1,14 @@
 module EquivalentXml
-  
-  ELEMENT_NODE                = 1
-  ATTRIBUTE_NODE              = 2
-  TEXT_NODE                   = 3
-  CDATA_SECTION_NODE          = 4
-  ENTITY_REFERENCE_NODE       = 5
-  ENTITY_NODE                 = 6
-  PROCESSING_INSTRUCTION_NODE = 7
-  COMMENT_NODE                = 8
-  DOCUMENT_NODE               = 9
-  DOCUMENT_TYPE_NODE          = 10
-  DOCUMENT_FRAGMENT_NODE      = 11
-  NOTATION_NODE               = 12
+
+require 'nokogiri'
 
   class << self
     
-    DEFAULT_OPTS                = { :element_order => false, :normalize_whitespace => true }
+    DEFAULT_OPTS = { :element_order => false, :normalize_whitespace => true }
 
     def equivalent?(node_1, node_2, opts = {}, &block)
       opts = DEFAULT_OPTS.merge(opts)
-      self.compare_nodes(node_1, node_2, opts, &block)
+      self.compare_nodes(self.as_node(node_1), self.as_node(node_2), opts, &block)
     end
   
     def compare_nodes(node_1, node_2, opts, &block)
@@ -29,15 +18,15 @@ module EquivalentXml
         false
       else
         case node_1.node_type
-        when DOCUMENT_NODE
+        when Nokogiri::XML::Node::DOCUMENT_NODE
           self.compare_documents(node_1,node_2,opts,&block)
-        when ELEMENT_NODE
+        when Nokogiri::XML::Node::ELEMENT_NODE
           self.compare_elements(node_1,node_2,opts,&block)
-        when ATTRIBUTE_NODE
+        when Nokogiri::XML::Node::ATTRIBUTE_NODE
           self.compare_attributes(node_1,node_2,opts,&block)
-        when CDATA_SECTION_NODE
+        when Nokogiri::XML::Node::CDATA_SECTION_NODE
           self.compare_cdata(node_1,node_2,opts,&block)
-        when TEXT_NODE
+        when Nokogiri::XML::Node::TEXT_NODE
           self.compare_text(node_1,node_2,opts,&block)
         else
           self.compare_children(node_1,node_2,opts,&block)
@@ -71,9 +60,9 @@ module EquivalentXml
     
     def compare_children(node_1, node_2, opts, &block)
       ignore_proc = lambda do |child|
-        child.is_a?(Nokogiri::XML::Comment) ||
-        child.is_a?(Nokogiri::XML::ProcessingInstruction) ||
-        (child.class == Nokogiri::XML::Text && child.text.strip.empty?)
+        child.node_type == Nokogiri::XML::Node::COMMENT_NODE ||
+        child.node_type == Nokogiri::XML::Node::PI_NODE ||
+        (opts[:normalize_whitespace] && child.node_type == Nokogiri::XML::Node::TEXT_NODE && child.text.strip.empty?)
       end
     
       nodeset_1 = node_1.children.reject { |child| ignore_proc.call(child) }
@@ -125,7 +114,15 @@ module EquivalentXml
       href2 = node_2.namespace.nil? ? '' : node_2.namespace.href
       return href1 == href2
     end
-  
+    
+    def as_node(data)
+      if data.respond_to?(:node_type)
+        return data
+      else
+        return Nokogiri::XML(data)
+      end
+    end
+    
   end
 
 end
