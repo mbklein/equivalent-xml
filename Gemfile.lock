@@ -1,7 +1,8 @@
 PATH
   remote: .
   specs:
-    equivalent-xml (0.1.1)
+    equivalent-xml (0.1.5)
+      nokogiri
 
 GEM
   remote: http://rubygems.org/
@@ -24,6 +25,5 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 1.0.0)
   equivalent-xml!
-  nokogiri
   rcov
   rspec

@@ -49,6 +49,18 @@ describe EquivalentXml do
     EquivalentXml.equivalent?(doc1,doc2).should == false
   end
 
+  it "should compare namespaces based on URI, not on prefix" do
+    doc1 = Nokogiri::XML("<doc xmlns:foo='foo:bar'><foo:first>foo  bar baz</foo:first><foo:second>things</foo:second></doc>")
+    doc2 = Nokogiri::XML("<doc xmlns:baz='foo:bar'><baz:first>foo  bar baz</baz:first><baz:second>things</baz:second></doc>")
+    EquivalentXml.equivalent?(doc1,doc2).should == true
+  end
+
+  it "should ignore declared but unused namespaces" do
+    doc1 = Nokogiri::XML("<doc xmlns:foo='foo:bar'><first>foo  bar baz</first><second>things</second></doc>")
+    doc2 = Nokogiri::XML("<doc><first>foo  bar baz</first><second>things</second></doc>")
+    EquivalentXml.equivalent?(doc1,doc2).should == true
+  end
+
   it "should normalize simple whitespace by default" do
     doc1 = Nokogiri::XML("<doc xmlns='foo:bar'><first>foo  bar baz</first><second>things</second></doc>")
     doc2 = Nokogiri::XML("<doc xmlns='foo:bar'><first>foo bar  baz</first><second>things</second></doc>")
