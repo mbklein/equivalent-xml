@@ -12,26 +12,31 @@ require 'nokogiri'
     end
   
     def compare_nodes(node_1, node_2, opts, &block)
-      yield(node_1, node_2) if block_given?
-      
+      result = nil
       if (node_1.class != node_2.class) or self.same_namespace?(node_1,node_2) == false
-        false
+        result = false
       else
         case node_1.node_type
         when Nokogiri::XML::Node::DOCUMENT_NODE
-          self.compare_documents(node_1,node_2,opts,&block)
+          result = self.compare_documents(node_1,node_2,opts,&block)
         when Nokogiri::XML::Node::ELEMENT_NODE
-          self.compare_elements(node_1,node_2,opts,&block)
+          result = self.compare_elements(node_1,node_2,opts,&block)
         when Nokogiri::XML::Node::ATTRIBUTE_NODE
-          self.compare_attributes(node_1,node_2,opts,&block)
+          result = self.compare_attributes(node_1,node_2,opts,&block)
         when Nokogiri::XML::Node::CDATA_SECTION_NODE
-          self.compare_cdata(node_1,node_2,opts,&block)
+          result = self.compare_cdata(node_1,node_2,opts,&block)
         when Nokogiri::XML::Node::TEXT_NODE
-          self.compare_text(node_1,node_2,opts,&block)
+          result = self.compare_text(node_1,node_2,opts,&block)
         else
-          self.compare_children(node_1,node_2,opts,&block)
+          result = self.compare_children(node_1,node_2,opts,&block)
         end
       end
+      if block_given?
+        block_result = yield(node_1, node_2, result)
+        if block_result.is_a?(TrueClass) or block_result.is_a?(FalseClass)
+          result = block_result
+        end
+      return result
     end
 
     def compare_documents(node_1, node_2, opts, &block)

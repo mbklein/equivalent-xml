@@ -15,7 +15,7 @@ Testing XML output is difficult:
 EquivalentXml for Nokogiri
 
 === Use
-  EquivalentXml.equivalent?(node_1, node_2, opts = { :element_order => false, :normalize_whitespace => true })
+  EquivalentXml.equivalent?(node_1, node_2, opts = { :element_order => false, :normalize_whitespace => true }) { |n1, n2, result| ... }
 
 node_1 and node_2 can be any Nokogiri::XML::Node descendants (or any string 
 containing an XML document or document fragment). The most common use case is 
@@ -29,6 +29,11 @@ node_1 is equivalent to node_2 if and only if:
 * For each child of node_1, there is exactly one equal child of node_2
 * If called with :element_order => true, equivalent child elements must be
   in the same relative position in order to be considered equal
+
+If a block is given, the block will be called every time two nodes are compared. The parameters will be 
+the two nodes being compared as well as the result of the comparison. If the block explicitly returns 
+`true` or `false` (a real `TrueClass` or `FalseClass`, not just an expression that can be coerced to
+true or false), the return value will override the result of the comparison.
 
 +Element+ nodes are equivalent if they have the same name, and their 
 child nodesets are equal (as defined above)
