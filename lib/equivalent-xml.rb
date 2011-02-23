@@ -36,6 +36,7 @@ require 'nokogiri'
         if block_result.is_a?(TrueClass) or block_result.is_a?(FalseClass)
           result = block_result
         end
+      end
       return result
     end
 
