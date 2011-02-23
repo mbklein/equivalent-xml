@@ -32,7 +32,7 @@ node_1 is equivalent to node_2 if and only if:
 
 If a block is given, the block will be called every time two nodes are compared. The parameters will be 
 the two nodes being compared as well as the result of the comparison. If the block explicitly returns 
-`true` or `false` (a real `TrueClass` or `FalseClass`, not just an expression that can be coerced to
++true+ or +false+ (a real +TrueClass+ or +FalseClass+, not just an expression that can be coerced to
 true or false), the return value will override the result of the comparison.
 
 +Element+ nodes are equivalent if they have the same name, and their 
