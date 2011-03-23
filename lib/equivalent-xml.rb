@@ -111,21 +111,16 @@ require 'nokogiri'
 
     def same_namespace?(node_1, node_2)
       args = [node_1,node_2]
-      unless args.all? { |node| node.respond_to?(:namespace) }
-        return true
-      end
-      
-      if args.all? { |node| node.nil? }
-        return true
-      end
 
       # CharacterData nodes shouldn't have namespaces. But in Nokogiri,
       # they do. And they're invisible. And they get corrupted easily.
-      # So let's wilfully ignore them.
-      if args.any? { |node| node.is_a?(Nokogiri::XML::CharacterData) }
-        return true
+      # So let's wilfully ignore them. And while we're at it, let's
+      # ignore any class that doesn't know it has a namespace.
+      if args.all? { |node| not node.respond_to?(:namespace) } or 
+         args.any? { |node| node.is_a?(Nokogiri::XML::CharacterData) }
+           return true
       end
-    
+      
       href1 = node_1.namespace.nil? ? '' : node_1.namespace.href
       href2 = node_2.namespace.nil? ? '' : node_2.namespace.href
       return href1 == href2
@@ -135,8 +130,8 @@ require 'nokogiri'
       if data.respond_to?(:node_type)
         return data
       else
-        result = Nokogiri::XML(data).root
-        if result.nil?
+        result = Nokogiri::XML(data)
+        if result.root.nil?
           return data
         else
           return result
