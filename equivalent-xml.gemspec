@@ -1,10 +1,9 @@
 Gem::Specification.new do |s|
   s.name = %q{equivalent-xml}
-  s.version = "0.2.1"
+  s.version = "0.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael B. Klein"]
-  s.date = %q{2011-02-17}
   s.description = %q{Compares two XML Nodes (Documents, etc.) for certain semantic equivalencies. 
     Currently written for Nokogiri, but with an eye toward supporting multiple XML libraries}
   s.email = %q{mbklein@gmail.com}
