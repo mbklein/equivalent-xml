@@ -16,11 +16,7 @@ rspec_namespace.define :be_equivalent_to do |expected, opts|
   match do |actual|
     @expected = expected
     @actual = actual
-    EquivalentXml.equivalent?(@actual,@expected,@opts) { |n1,n2,result|
-      if result == false and @failure_nodes.nil?
-        @failure_nodes = { :expected => n2, :actual => n1 }
-      end
-    }
+    EquivalentXml.equivalent?(@actual,@expected,@opts)
   end
   
   chain :respecting_element_order do 
@@ -34,18 +30,18 @@ rspec_namespace.define :be_equivalent_to do |expected, opts|
   failure_message_for_should do
     <<-MESSAGE
 expected:
-#{@failure_nodes[:expected].to_xml}
+#{@expected.to_s}
 got:
-#{@failure_nodes[:actual].to_xml}
+#{@actual.to_s}
 MESSAGE
   end
       
   failure_message_for_should_not do
     <<-MESSAGE
 expected:
-#{@actual.to_xml}
+#{@actual.to_s}
 not to be equivalent to:
-#{@expected.to_xml}
+#{@expected.to_s}
 MESSAGE
   end
 

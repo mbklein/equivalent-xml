@@ -10,6 +10,16 @@ describe EquivalentXml do
     doc1.should be_equivalent_to(doc1)
   end
   
+  it "should compare non-XML content based on its string representation" do
+    nil.should be_equivalent_to(nil)
+    ''.should be_equivalent_to('')
+    ''.should be_equivalent_to(nil)
+    'foo'.should be_equivalent_to('foo')
+    'foo'.should_not be_equivalent_to('bar')
+    doc1 = Nokogiri::XML("<doc xmlns='foo:bar'><first order='1'>foo  bar baz</first><second>things</second></doc>")
+    doc1.should_not be_equivalent_to(nil)
+  end
+
   it "should ensure that attributes match" do
     doc1 = Nokogiri::XML("<doc xmlns='foo:bar'><first order='1'>foo  bar baz</first><second>things</second></doc>")
     doc2 = Nokogiri::XML("<doc xmlns='foo:bar'><first order='2'>foo  bar baz</first><second>things</second></doc>")

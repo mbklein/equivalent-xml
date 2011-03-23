@@ -13,7 +13,9 @@ require 'nokogiri'
   
     def compare_nodes(node_1, node_2, opts, &block)
       result = nil
-      if (node_1.class != node_2.class) or self.same_namespace?(node_1,node_2) == false
+      if [node_1, node_2].any? { |node| not node.respond_to?(:node_type) }
+        result = node_1.to_s == node_2.to_s
+      elsif (node_1.class != node_2.class) or self.same_namespace?(node_1,node_2) == false
         result = false
       else
         case node_1.node_type
@@ -108,11 +110,19 @@ require 'nokogiri'
     end
 
     def same_namespace?(node_1, node_2)
-      unless node_1.respond_to?(:namespace) and node_2.respond_to?(:namespace)
+      args = [node_1,node_2]
+      unless args.all? { |node| node.respond_to?(:namespace) }
         return true
       end
       
-      if node_1.namespace.nil? and node_2.namespace.nil?
+      if args.all? { |node| node.nil? }
+        return true
+      end
+
+      # CharacterData nodes shouldn't have namespaces. But in Nokogiri,
+      # they do. And they're invisible. And they get corrupted easily.
+      # So let's wilfully ignore them.
+      if args.any? { |node| node.is_a?(Nokogiri::XML::CharacterData) }
         return true
       end
     
@@ -125,7 +135,12 @@ require 'nokogiri'
       if data.respond_to?(:node_type)
         return data
       else
-        return Nokogiri::XML(data)
+        result = Nokogiri::XML(data).root
+        if result.nil?
+          return data
+        else
+          return result
+        end
       end
     end
     
