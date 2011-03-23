@@ -29,9 +29,9 @@ Gem::Specification.new do |s|
     "spec/equivalent-xml_spec.rb"
   ]
 
-  s.add_runtime_dependency(%q<nokogiri>, [">= 0"])
+  s.add_runtime_dependency(%q<nokogiri>, [">= 1.4.3"])
   s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
-  s.add_development_dependency(%q<rcov>, [">= 0"])
-  s.add_development_dependency(%q<rspec>, [">= 0"])
+  s.add_development_dependency(%q<rcov>, [">= 0.9.0"])
+  s.add_development_dependency(%q<rspec>, [">= 1.2.4"])
 end
 
