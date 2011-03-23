@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = %q{equivalent-xml}
-  s.version = "0.2.0"
+  s.version = "0.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Michael B. Klein"]
@@ -17,7 +17,8 @@ Gem::Specification.new do |s|
     "LICENSE.txt",
     "README.rdoc",
     "Rakefile",
-    "lib/equivalent-xml.rb"
+    "lib/equivalent-xml.rb",
+    "lib/equivalent-xml/rspec_matchers.rb"
   ]
   s.homepage = %q{http://github.com/mbklein/equivalent-xml}
   s.licenses = ["MIT"]
@@ -25,7 +26,7 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.5.2}
   s.summary = %q{Easy equivalency tests for Ruby XML}
   s.test_files = [
-    "spec/equvalent-xml_spec.rb"
+    "spec/equivalent-xml_spec.rb"
   ]
 
   s.add_runtime_dependency(%q<nokogiri>, [">= 0"])
