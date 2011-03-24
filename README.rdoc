@@ -88,6 +88,5 @@ Chained modifiers:
 
 == Copyright
 
-Copyright (c) 2011 Michael B. Klein. See LICENSE.txt for
-further details.
+Copyright (c) 2011 Michael B. Klein. See LICENSE.txt for further details.
 
