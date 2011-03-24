@@ -1,16 +1,25 @@
-module EquivalentXml
-
 require 'nokogiri'
+
+module EquivalentXml
 
   class << self
     
     DEFAULT_OPTS = { :element_order => false, :normalize_whitespace => true }
 
+    # Determine if two XML documents or nodes are equivalent
+    #
+    # @param [Nokogiri::XML::Node] node_1 The first top-level XML node to compare
+    # @param [Nokogiri::XML::Node] node_2 The secton top-level XML node to compare
+    # @param [Hash] opts Options that determine how certain comparisons are evaluated
+    # @option opts [Boolean] :element_order (false) Child elements must occur in the same order to be considered equivalent
+    # @option opts [Boolean] :normalize_whitespace (true) Collapse whitespace within Text nodes before comparing
+    # @yield [n1,n2,result] The two nodes currently being evaluated, and whether they are considered equivalent. The block can return true or false to override the default evaluation
+    # @return [Boolean] true or false
     def equivalent?(node_1, node_2, opts = {}, &block)
       opts = DEFAULT_OPTS.merge(opts)
-      self.compare_nodes(self.as_node(node_1), self.as_node(node_2), opts, &block)
+      self.compare_nodes(as_node(node_1), as_node(node_2), opts, &block)
     end
-  
+
     def compare_nodes(node_1, node_2, opts, &block)
       result = nil
       if [node_1, node_2].any? { |node| not node.respond_to?(:node_type) }
@@ -109,6 +118,10 @@ require 'nokogiri'
       return local_set_2.length == 0
     end
 
+    # Determine if two nodes are in the same effective Namespace
+    #
+    # @param [Nokogiri::XML::Node OR String] node_1 The first node to test
+    # @param [Nokogiri::XML::Node OR String] node_2 The second node to test
     def same_namespace?(node_1, node_2)
       args = [node_1,node_2]
 
@@ -126,6 +139,7 @@ require 'nokogiri'
       return href1 == href2
     end
     
+    private
     def as_node(data)
       if data.respond_to?(:node_type)
         return data
