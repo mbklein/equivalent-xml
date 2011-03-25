@@ -1,48 +1,58 @@
 require 'equivalent-xml'
 
-class RSpecNotFound < Exception ; end
-  
-if defined?(RSpec)
-  rspec_namespace = RSpec::Matchers
-elsif defined?(Spec)
-  rspec_namespace = Spec::Matchers
-else
-  raise RSpecNotFound, "Cannot find Spec (rspec 1.x) or RSpec (rspec 2.x)"
-end
+module EquivalentXml::RSpecMatchers
 
-rspec_namespace.define :be_equivalent_to do |expected, opts|
-  @opts = opts || {}
-  
-  match do |actual|
-    @expected = expected
-    @actual = actual
-    EquivalentXml.equivalent?(@actual,@expected,@opts)
+  if defined?(::RSpec)
+    rspec_namespace = ::RSpec::Matchers
+  elsif defined?(::Spec)
+    rspec_namespace = ::Spec::Matchers
+  else
+    raise NameError, "Cannot find Spec (rspec 1.x) or RSpec (rspec 2.x)"
   end
-  
-  chain :respecting_element_order do 
-    @opts[:element_order] = true
+
+  # Determine if the receiver is equivalent to the argument as defined
+  # in {file:README.rdoc README.rdoc} and {EquivalentXml.equivalent? EquivalentXml.equivalent?}. 
+  #   node.should be_equivalent_to(other_node)
+  #   node.should_not be_equivalent_to(other_node)
+  #   node.should be_equivalent_to(other_node).respecting_element_order
+  #   node.should be_equivalent_to(other_node).with_whitespace_intact
+  #   node.should be_equivalent_to(other_node).respecting_element_order.with_whitespace_intact
+  def be_equivalent_to(expected)
+    # Placeholder method for documentation purposes; the actual
+    # method is defined using RSpec's matcher DSL.
   end
+
+  rspec_namespace.define :be_equivalent_to do |expected|
+    @opts = {}
+    match do |actual|
+      EquivalentXml.equivalent?(actual,expected,@opts)
+    end
   
-  chain :with_whitespace_intact do
-    @opts[:normalize_whitespace] = false
-  end
+    chain :respecting_element_order do
+      @opts[:element_order] = true
+    end
   
-  failure_message_for_should do
-    <<-MESSAGE
+    chain :with_whitespace_intact do
+      @opts[:normalize_whitespace] = false
+    end
+  
+    failure_message_for_should do |actual|
+      <<-MESSAGE
 expected:
-#{@expected.to_s}
+#{expected.to_s}
 got:
-#{@actual.to_s}
+#{actual.to_s}
 MESSAGE
-  end
+    end
       
-  failure_message_for_should_not do
-    <<-MESSAGE
+    failure_message_for_should_not do |actual|
+      <<-MESSAGE
 expected:
-#{@actual.to_s}
+#{actual.to_s}
 not to be equivalent to:
-#{@expected.to_s}
+#{expected.to_s}
 MESSAGE
+    end
   end
 
 end
