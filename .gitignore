@@ -41,3 +41,4 @@ pkg
 # For vim:
 #*.swp
 /*.gem
+Gemfile.lock

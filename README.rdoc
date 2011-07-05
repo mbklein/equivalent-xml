@@ -86,6 +86,24 @@ Chained modifiers:
 * Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
 * Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
 
+== History
+
+- <b>0.2.7</b> - Auto-require RSpec matchers if RSpec is loaded
+- <b>0.2.6</b> - Added documentation for RSpec matchers
+- <b>0.2.5</b> - Added YARD documentation
+- <b>0.2.4</b> - Fixed comparison of non-XML input
+- <b>0.2.3</b> - Improved handling of non-XML input
+- <b>0.2.2</b> - Dependency update
+- <b>0.2.1</b> - Hotfix: Missing files in gemspec
+- <b>0.2.0</b> - Custom rspec matchers
+- <b>0.1.6</b> - Allow caller to override comparison result in block
+- <b>0.1.5</b> - Allow XML documents to be passed as strings, re-instituting dependency on nokogiri
+- <b>0.1.4</b> - Hotfix: Missing block parameter on compare_nodesets()
+- <b>0.1.3</b> - Hotfix: Missing block parameter on compare_nodesets()
+- <b>0.1.2</b> - Yield evaluated nodes and provisional result if block given
+- <b>0.1.1</b> - Removed explicit runtime dependency on nokogiri
+- <b>0.1.0</b> - Initial release
+
 == Copyright
 
 Copyright (c) 2011 Michael B. Klein. See LICENSE.txt for further details.

@@ -156,3 +156,7 @@ module EquivalentXml
   end
 
 end
+
+if defined?(::RSpec) or defined?(::Spec)
+  require 'equivalent-xml/rspec_matchers'
+end
