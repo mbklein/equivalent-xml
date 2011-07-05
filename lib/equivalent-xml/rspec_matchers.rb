@@ -37,21 +37,11 @@ module EquivalentXml::RSpecMatchers
     end
   
     failure_message_for_should do |actual|
-      <<-MESSAGE
-expected:
-#{expected.to_s}
-got:
-#{actual.to_s}
-MESSAGE
+      [ 'expected:', expected.to_s, 'got:', actual.to_s ].join("\n")
     end
       
     failure_message_for_should_not do |actual|
-      <<-MESSAGE
-expected:
-#{actual.to_s}
-not to be equivalent to:
-#{expected.to_s}
-MESSAGE
+      [ 'expected:', actual.to_s, 'not to be equivalent to:', expected.to_s ].join("\n")
     end
   end
 

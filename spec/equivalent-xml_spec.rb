@@ -1,7 +1,7 @@
 $:.push(File.join(File.dirname(__FILE__),'..','lib'))
 require 'nokogiri'
 require 'equivalent-xml'
-require 'equivalent-xml/rspec_matchers'
+#require 'equivalent-xml/rspec_matchers'
 
 describe EquivalentXml do
 
