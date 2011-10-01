@@ -8,8 +8,8 @@ module EquivalentXml
 
     # Determine if two XML documents or nodes are equivalent
     #
-    # @param [Nokogiri::XML::Node] node_1 The first top-level XML node to compare
-    # @param [Nokogiri::XML::Node] node_2 The secton top-level XML node to compare
+    # @param [Nokogiri::XML::Node, Nokogiri::XML::NodeSet] node_1 The first top-level XML node to compare
+    # @param [Nokogiri::XML::Node, Nokogiri::XML::NodeSet] node_2 The secton top-level XML node to compare
     # @param [Hash] opts Options that determine how certain comparisons are evaluated
     # @option opts [Boolean] :element_order (false) Child elements must occur in the same order to be considered equivalent
     # @option opts [Boolean] :normalize_whitespace (true) Collapse whitespace within Text nodes before comparing
@@ -17,7 +17,11 @@ module EquivalentXml
     # @return [Boolean] true or false
     def equivalent?(node_1, node_2, opts = {}, &block)
       opts = DEFAULT_OPTS.merge(opts)
-      self.compare_nodes(as_node(node_1), as_node(node_2), opts, &block)
+      if [node_1, node_2].any? { |node| node.is_a?(Nokogiri::XML::NodeSet)}
+        self.compare_nodesets(as_nodeset(node_1, opts), as_nodeset(node_2, opts), opts, &block)
+      else
+        self.compare_nodes(as_node(node_1), as_node(node_2), opts, &block)
+      end
     end
 
     def compare_nodes(node_1, node_2, opts, &block)
@@ -76,14 +80,8 @@ module EquivalentXml
     end
     
     def compare_children(node_1, node_2, opts, &block)
-      ignore_proc = lambda do |child|
-        child.node_type == Nokogiri::XML::Node::COMMENT_NODE ||
-        child.node_type == Nokogiri::XML::Node::PI_NODE ||
-        (opts[:normalize_whitespace] && child.node_type == Nokogiri::XML::Node::TEXT_NODE && child.text.strip.empty?)
-      end
-    
-      nodeset_1 = node_1.children.reject { |child| ignore_proc.call(child) }
-      nodeset_2 = node_2.children.reject { |child| ignore_proc.call(child) }
+      nodeset_1 = as_nodeset(node_1.children, opts)
+      nodeset_2 = as_nodeset(node_2.children, opts)
       result = self.compare_nodesets(nodeset_1,nodeset_2,opts,&block)
       
       if node_1.respond_to?(:attribute_nodes)
@@ -104,6 +102,7 @@ module EquivalentXml
     
       local_set_1.each do |search_node|
         found_node = local_set_2.find { |test_node| self.equivalent?(search_node,test_node,opts,&block) }
+
         if found_node.nil?
           return false
         else
@@ -153,6 +152,21 @@ module EquivalentXml
       end
     end
     
+    def as_nodeset(data, opts = {})
+      ignore_proc = lambda do |child|
+        child.node_type == Nokogiri::XML::Node::COMMENT_NODE ||
+        child.node_type == Nokogiri::XML::Node::PI_NODE ||
+        (opts[:normalize_whitespace] && child.node_type == Nokogiri::XML::Node::TEXT_NODE && child.text.strip.empty?)
+      end
+
+      if data.is_a?(Nokogiri::XML::NodeSet)
+        data.reject { |child| ignore_proc.call(child) }
+      else
+        result = Nokogiri::XML("<root>#{data}</root>")
+        result.root.nil? ? data : result.root.children.reject { |child| ignore_proc.call(child) }
+      end
+    end
+
   end
 
 end

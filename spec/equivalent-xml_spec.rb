@@ -137,4 +137,13 @@ describe EquivalentXml do
     doc1.should_not be_equivalent_to(doc2)
   end
 
+  it "should compare nodesets" do
+    doc1 = Nokogiri::XML("<doc xmlns='foo:bar'><first>foo  bar baz</first><second>things</second></doc>")
+    doc1.root.children.should be_equivalent_to(doc1.root.children)
+  end
+  
+  it "should compare nodeset with string" do
+    doc1 = Nokogiri::XML("<doc xmlns='foo:bar'><first>foo  bar baz</first><second>things</second></doc>")
+    doc1.root.children.should be_equivalent_to("<first xmlns='foo:bar'>foo  bar baz</first><second xmlns='foo:bar'>things</second>")
+  end
 end
