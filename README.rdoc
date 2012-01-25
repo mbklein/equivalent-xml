@@ -88,6 +88,7 @@ Chained modifiers:
 
 == History
 
+- <b>0.2.9</b> - Fix for rspec-rails >= 2.7 (contrib. by jcoyne)
 - <b>0.2.8</b> - Allow comparison against nodesets (contrib. by gkellogg)
 - <b>0.2.7</b> - Auto-require RSpec matchers if RSpec is loaded
 - <b>0.2.6</b> - Added documentation for RSpec matchers
