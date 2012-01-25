@@ -1,8 +1,9 @@
-= equivalent-xml
+# equivalent-xml
 
-== Description
+## Description
 
-=== Problem
+### Problem
+
 Testing XML output is difficult:
 * Comparing text output is brittle due to the vagaries of serialization.
 * Attribute order doesn't matter.
@@ -11,14 +12,15 @@ Testing XML output is difficult:
 * Nodes in the same namespace don't always use the same prefix
 * Etc.
 
-=== Solution
+### Solution
+
 EquivalentXml for Nokogiri
 
 [![Build Status](https://secure.travis-ci.org/mbklein/equivalent-xml.png)](http://travis-ci.org/mbklein/equivalent-xml)
 [![Dependency Status](https://gemnasium.com/mbklein/equivalent-xml.png)](https://gemnasium.com/mbklein/equivalent-xml)
 
-=== Use
-  EquivalentXml.equivalent?(node_1, node_2, opts = { :element_order => false, :normalize_whitespace => true }) { |n1, n2, result| ... }
+### Use
+    EquivalentXml.equivalent?(node_1, node_2, opts = { :element_order => false, :normalize_whitespace => true }) { |n1, n2, result| ... }
 
 node_1 and node_2 can be any Nokogiri::XML::Node descendants (or any string 
 containing an XML document or document fragment). The most common use case is 
@@ -35,51 +37,54 @@ node_1 is equivalent to node_2 if and only if:
 
 If a block is given, the block will be called every time two nodes are compared. The parameters will be 
 the two nodes being compared as well as the result of the comparison. If the block explicitly returns 
-+true+ or +false+ (a real +TrueClass+ or +FalseClass+, not just an expression that can be coerced to
+`true` or `false` (a real `TrueClass` or `FalseClass`, not just an expression that can be coerced to
 true or false), the return value will override the result of the comparison.
 
-+Element+ nodes are equivalent if they have the same name, and their 
+`Element` nodes are equivalent if they have the same name, and their 
 child nodesets are equal (as defined above)
 
-+Attribute+ nodes are equivalent if their names and values match exactly
+`Attribute` nodes are equivalent if their names and values match exactly
 
-+CDATA+ nodes are equivalent if their text strings match exactly,
+`CDATA` nodes are equivalent if their text strings match exactly,
 including leading, trailing, and internal whitespace
 
-Non-CDATA +CharacterData+ nodes are equivalent if their text strings 
+Non-CDATA `CharacterData` nodes are equivalent if their text strings 
 match after stripping leading and trailing whitespace and collapsing 
 internal whitespace to a single space
 
-+Document+ nodes are equivalent if their root nodes are equal
+`Document` nodes are equivalent if their root nodes are equal
 
-+ProcessingInstruction+ and +Comment+ nodes are ignored
+`ProcessingInstruction` and `Comment` nodes are ignored
 
-==== Options
-  :element_order => true
+#### Options
+
+    :element_order => true
 
 Require elements to be in the same relative position in order to be
 considered equivalent.
 
-  :normalize_whitespace => false
+    :normalize_whitespace => false
 
 Don't normalize whitespace within text nodes; require text nodes to 
 match exactly.
 
-=== Using with RSpec
+### Using with RSpec
 
 EquivalentXml includes a custom matcher for RSpec (version >=1.2.4) that makes including XML
 equivalencies in your spec tests a cinch!
 
 Equivalency:
-  node_1.should be_equivalent_to(node_2)
-  node_1.should_not be_equivalent_to(node_2)
+
+    node_1.should be_equivalent_to(node_2)
+    node_1.should_not be_equivalent_to(node_2)
 
 Chained modifiers:
-  node_1.should be_equivalent_to(node_2).respecting_element_order
-  node_1.should be_equivalent_to(node_2).with_whitespace_intact
-  node_1.should be_equivalent_to(node_2).respecting_element_order.with_whitespace_intact
 
-== Contributing to equivalent-xml
+    node_1.should be_equivalent_to(node_2).respecting_element_order
+    node_1.should be_equivalent_to(node_2).with_whitespace_intact
+    node_1.should be_equivalent_to(node_2).respecting_element_order.with_whitespace_intact
+
+## Contributing to equivalent-xml
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
@@ -89,7 +94,7 @@ Chained modifiers:
 * Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
 * Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
 
-== History
+## History
 
 - <b>0.2.9</b> - Fix for rspec-rails >= 2.7 (contrib. by jcoyne)
 - <b>0.2.8</b> - Allow comparison against nodesets (contrib. by gkellogg)
@@ -109,7 +114,7 @@ Chained modifiers:
 - <b>0.1.1</b> - Removed explicit runtime dependency on nokogiri
 - <b>0.1.0</b> - Initial release
 
-== Copyright
+## Copyright
 
 Copyright (c) 2011 Michael B. Klein. See LICENSE.txt for further details.
 
