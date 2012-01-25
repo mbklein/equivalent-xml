@@ -1,5 +1,10 @@
 require 'equivalent-xml'
 
+begin
+  require 'rspec-expectations'
+rescue LoadError
+end
+
 module EquivalentXml::RSpecMatchers
 
   if defined?(::RSpec)
