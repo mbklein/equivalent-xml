@@ -5,6 +5,7 @@
 ### Problem
 
 Testing XML output is difficult:
+
 * Comparing text output is brittle due to the vagaries of serialization.
 * Attribute order doesn't matter.
 * Element order matters sometimes, but not always. 
@@ -27,6 +28,7 @@ containing an XML document or document fragment). The most common use case is
 to compare two Nokogiri::XML::Document instances.
 
 node_1 is equivalent to node_2 if and only if:
+
 * node_1 and node_2 are of the same class
 * node_1 and node_2 are in the same namespace
 * node_1 and node_2 have the same number of child nodes
