@@ -1,4 +1,4 @@
-if RUBY_ENGINE == 'ruby' and RUBY_VERSION >= '1.9'
+if defined?(RUBY_ENGINE) and (RUBY_ENGINE == 'ruby') and (RUBY_VERSION >= '1.9')
   require 'simplecov'
   SimpleCov.start
 end
