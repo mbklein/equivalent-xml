@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'bundler'
 require 'rake/tasklib'
-require 'rdoc/task'
+require 'rake/rdoctask'
 
 begin
   Bundler.setup(:default, :development)
