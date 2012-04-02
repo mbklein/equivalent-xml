@@ -1,7 +1,8 @@
 $:.push(File.join(File.dirname(__FILE__),'..','lib'))
 require 'nokogiri'
 require 'equivalent-xml'
-#require 'equivalent-xml/rspec_matchers'
+require 'simplecov'
+SimpleCov.start
 
 describe EquivalentXml do
 
