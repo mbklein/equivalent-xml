@@ -1,1 +1,1 @@
-rvm gemset use equivalent-xml
+rvm gemset --create use equivalent-xml

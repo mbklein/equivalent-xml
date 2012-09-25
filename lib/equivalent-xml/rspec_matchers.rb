@@ -30,7 +30,8 @@ module EquivalentXml::RSpecMatchers
   rspec_namespace.define :be_equivalent_to do |expected|
     @opts = {}
     match do |actual|
-      EquivalentXml.equivalent?(actual,expected,@opts)
+      @xml_differ = EquivalentXml.new
+      @xml_differ.equivalent?(expected, actual, @opts)
     end
   
     chain :respecting_element_order do
@@ -42,9 +43,9 @@ module EquivalentXml::RSpecMatchers
     end
   
     failure_message_for_should do |actual|
-      [ 'expected:', expected.to_s, 'got:', actual.to_s ].join("\n")
+      "\nDiff:#{@xml_differ.diff * "\n"}"
     end
-      
+
     failure_message_for_should_not do |actual|
       [ 'expected:', actual.to_s, 'not to be equivalent to:', expected.to_s ].join("\n")
     end

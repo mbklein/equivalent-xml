@@ -28,8 +28,8 @@ describe EquivalentXml do
     doc2 = Nokogiri::XML("<doc xmlns='foo:bar'><first order='2'>foo  bar baz</first><second>things</second></doc>")
     doc1.should_not be_equivalent_to(doc2)
 
-    doc1 = Nokogiri::XML("<doc xmlns='foo:bar'><first order='1'>foo  bar baz</first><second>things</second></doc>")
-    doc2 = Nokogiri::XML("<doc xmlns='foo:bar'><first order='1'>foo  bar baz</first><second>things</second></doc>")
+    doc1 = Nokogiri::XML("<doc><first order='1'>foo  bar baz</first><second>things</second></doc>")
+    doc2 = Nokogiri::XML("<doc><first order='1'>foo  bar baz</first><second>things</second></doc>")
     doc1.should be_equivalent_to(doc2)
   end
   
