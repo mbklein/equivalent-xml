@@ -22,6 +22,7 @@ module EquivalentXml::RSpecMatchers
   #   node.should be_equivalent_to(other_node).respecting_element_order
   #   node.should be_equivalent_to(other_node).with_whitespace_intact
   #   node.should be_equivalent_to(other_node).respecting_element_order.with_whitespace_intact
+  #   node.should be_equivalent_to(other_node).ignoring_content_of("Device > SerialNumber")
   def be_equivalent_to(expected)
     # Placeholder method for documentation purposes; the actual
     # method is defined using RSpec's matcher DSL.
@@ -39,6 +40,10 @@ module EquivalentXml::RSpecMatchers
   
     chain :with_whitespace_intact do
       @opts[:normalize_whitespace] = false
+    end
+
+    chain :ignoring_content_of do |paths|
+      @opts[:ignore_content] = paths
     end
   
     failure_message_for_should do |actual|
