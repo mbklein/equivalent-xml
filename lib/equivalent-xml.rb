@@ -13,6 +13,7 @@ module EquivalentXml
     # @param [Hash] opts Options that determine how certain comparisons are evaluated
     # @option opts [Boolean] :element_order (false) Child elements must occur in the same order to be considered equivalent
     # @option opts [Boolean] :normalize_whitespace (true) Collapse whitespace within Text nodes before comparing
+    # @option opts [String, Array] :ignore_content (nil) CSS selector(s) of nodes for which the content (text and child nodes) should be ignored when comparing for equivalence
     # @yield [n1,n2,result] The two nodes currently being evaluated, and whether they are considered equivalent. The block can return true or false to override the default evaluation
     # @return [Boolean] true or false
     def equivalent?(node_1, node_2, opts = {}, &block)
@@ -80,9 +81,14 @@ module EquivalentXml
     end
     
     def compare_children(node_1, node_2, opts, &block)
-      nodeset_1 = as_nodeset(node_1.children, opts)
-      nodeset_2 = as_nodeset(node_2.children, opts)
-      result = self.compare_nodesets(nodeset_1,nodeset_2,opts,&block)
+      if ignore_content?(node_1, opts)
+        # Stop recursion and state a match on the children
+        result = true
+      else
+        nodeset_1 = as_nodeset(node_1.children, opts)
+        nodeset_2 = as_nodeset(node_2.children, opts)
+        result = self.compare_nodesets(nodeset_1,nodeset_2,opts,&block)
+      end
       
       if node_1.respond_to?(:attribute_nodes)
         attributes_1 = node_1.attribute_nodes
@@ -167,6 +173,16 @@ module EquivalentXml
       end
     end
 
+    def ignore_content?(node, opts = {})
+      ignore_list = Array(opts[:ignore_content]).flatten.compact
+      return false if ignore_list.empty?
+
+      ignore_list.each do |selector|
+        return true if node.document.css(selector).include?(node)
+      end
+
+      return false
+    end
   end
 
 end

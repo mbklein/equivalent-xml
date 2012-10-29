@@ -149,4 +149,62 @@ describe EquivalentXml do
     doc1 = Nokogiri::XML("<doc xmlns='foo:bar'><first>foo  bar baz</first><second>things</second></doc>")
     doc1.root.children.should be_equivalent_to("<first xmlns='foo:bar'>foo  bar baz</first><second xmlns='foo:bar'>things</second>")
   end
+
+  context "with the :ignore_content_paths option set to a CSS selector" do
+    it "ignores the text content of a node that matches the given CSS selector when comparing with #equivalent?" do
+      doc1 = Nokogiri::XML("<Devices><Device><Name>iPhone</Name><SerialNumber>1234</SerialNumber></Device></Devices>")
+      doc2 = Nokogiri::XML("<Devices><Device><Name>iPhone</Name><SerialNumber>5678</SerialNumber></Device></Devices>")
+
+      EquivalentXml.equivalent?(doc1, doc2, :ignore_content => "SerialNumber").should be_true
+      EquivalentXml.equivalent?(doc1, doc2, :ignore_content => "Devices>Device>SerialNumber").should be_true
+
+      doc1.should be_equivalent_to(doc2).ignoring_content_of("SerialNumber")
+      doc1.should be_equivalent_to(doc2).ignoring_content_of("Devices>Device>SerialNumber")
+    end
+
+    it "ignores the text content of a node that matches the given CSS selector when comparing with a matcher" do
+      doc1 = Nokogiri::XML("<Devices><Device><Name>iPhone</Name><SerialNumber>1234</SerialNumber></Device></Devices>")
+      doc2 = Nokogiri::XML("<Devices><Device><Name>iPhone</Name><SerialNumber>5678</SerialNumber></Device></Devices>")
+
+      doc1.should be_equivalent_to(doc2).ignoring_content_of("SerialNumber")
+      doc1.should be_equivalent_to(doc2).ignoring_content_of("Devices>Device>SerialNumber")
+    end
+
+    it "ignores all children of a node that matches the given selector when comparing for equivalence" do
+      doc1 = Nokogiri::XML("<Devices><Device><Name>iPhone</Name><SerialNumber>1234</SerialNumber></Device></Devices>")
+      doc2 = Nokogiri::XML("<Devices><Device><Name>iPad</Name><SerialNumber>5678</SerialNumber></Device></Devices>")
+
+      doc1.should be_equivalent_to(doc2).ignoring_content_of("Device")
+    end
+
+    it "still considers the number of elements even if they match the given CSS selector" do
+      doc1 = Nokogiri::XML("<Devices><Device><Name>iPhone</Name><SerialNumber>1234</SerialNumber></Device></Devices>")
+      doc2 = Nokogiri::XML("<Devices><Device><Name>iPhone</Name><SerialNumber>1234</SerialNumber></Device><Device><Name>iPad</Name><SerialNumber>5678</SerialNumber></Device></Devices>")
+
+      doc1.should_not be_equivalent_to(doc2).ignoring_content_of("Device")
+    end
+
+    it "still considers attributes on the matched path when comparing for equivalence" do
+      doc1 = Nokogiri::XML("<Devices><Device status='owned'><Name>iPhone</Name><SerialNumber>1234</SerialNumber></Device></Devices>")
+      doc2 = Nokogiri::XML("<Devices><Device status='rented'><Name>iPhone</Name><SerialNumber>1234</SerialNumber></Device></Devices>")
+
+      doc1.should_not be_equivalent_to(doc2).ignoring_content_of("Device")
+    end
+
+    it "ignores all matches of the CSS selector" do
+      doc1 = Nokogiri::XML("<Devices><Device><Name>iPhone</Name><SerialNumber>1001</SerialNumber></Device><Device><Name>iPad</Name><SerialNumber>2001</SerialNumber></Device></Devices>")
+      doc2 = Nokogiri::XML("<Devices><Device><Name>iPhone</Name><SerialNumber>1002</SerialNumber></Device><Device><Name>iPad</Name><SerialNumber>2002</SerialNumber></Device></Devices>")
+
+      doc1.should be_equivalent_to(doc2).ignoring_content_of("SerialNumber")
+    end
+  end
+
+  context "with the :ignore_content_paths option set to an array of CSS selectors" do
+    it "ignores the content of all nodes that match any of the given CSS selectors when comparing for equivalence" do
+      doc1 = Nokogiri::XML("<Devices><Device><Name>iPhone</Name><SerialNumber>1234</SerialNumber><ICCID>AAAA</ICCID></Device></Devices>")
+      doc2 = Nokogiri::XML("<Devices><Device><Name>iPhone</Name><SerialNumber>5678</SerialNumber><ICCID>BBBB</ICCID></Device></Devices>")
+
+      doc1.should be_equivalent_to(doc2).ignoring_content_of(["SerialNumber", "ICCID"])
+    end
+  end
 end

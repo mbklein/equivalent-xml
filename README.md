@@ -70,6 +70,12 @@ considered equivalent.
 Don't normalize whitespace within text nodes; require text nodes to 
 match exactly.
 
+    :ignore_content => ["Device > SerialNumber", "Device > ICCID"]
+
+A single CSS selector, or an array of CSS selectors, of nodes for which the content (text and child
+nodes) should be ignored when comparing for equivalence.  Defaults to `nil`.  (Uses Nokogiri's
+`Node#css(*rules)` to conduct the search.)
+
 ### Using with RSpec
 
 EquivalentXml includes a custom matcher for RSpec (version >=1.2.4) that makes including XML
@@ -85,6 +91,7 @@ Chained modifiers:
     node_1.should be_equivalent_to(node_2).respecting_element_order
     node_1.should be_equivalent_to(node_2).with_whitespace_intact
     node_1.should be_equivalent_to(node_2).respecting_element_order.with_whitespace_intact
+    node_1.should be_equivalent_to(node_2).ignoring_content_of("SerialNumber")
 
 ## Contributing to equivalent-xml
  
