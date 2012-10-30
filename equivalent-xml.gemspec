@@ -9,12 +9,12 @@ Gem::Specification.new do |s|
   s.email = %q{mbklein@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE.txt",
-    "README.rdoc"
+    "README.md"
   ]
   s.files = [
     "Gemfile",
     "LICENSE.txt",
-    "README.rdoc",
+    "README.md",
     "Rakefile",
     "lib/equivalent-xml.rb",
     "lib/equivalent-xml/rspec_matchers.rb"
