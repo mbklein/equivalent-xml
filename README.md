@@ -101,10 +101,12 @@ Chained modifiers:
 * Start a feature/bugfix branch
 * Commit and push until you are happy with your contribution
 * Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
-* Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
+* Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is 
+  otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
 
 ## History
 
+- <b>0.3.0</b> - Added :ignore_content option (conrib. by moklett)
 - <b>0.2.9</b> - Fix for rspec-rails >= 2.7 (contrib. by jcoyne)
 - <b>0.2.8</b> - Allow comparison against nodesets (contrib. by gkellogg)
 - <b>0.2.7</b> - Auto-require RSpec matchers if RSpec is loaded
