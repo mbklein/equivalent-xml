@@ -32,6 +32,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency(%q<bundler>, [">= 1.0.0"])
   s.add_development_dependency(%q<simplecov>)
   s.add_development_dependency(%q<rspec>, [">= 1.2.4"])
-  s.add_development_dependency(%q<rake>, [">= 0.8.7"])
+  s.add_development_dependency(%q<rake>, [">= 0.9.0"])
+  s.add_development_dependency(%q<rdoc>, [">= 3.12"])
 end
 
