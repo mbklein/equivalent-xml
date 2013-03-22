@@ -1,10 +1,12 @@
 require 'nokogiri'
 
+puts "INFO: lokal equivalen-xml"
+
 module EquivalentXml
 
   class << self
     
-    DEFAULT_OPTS = { :element_order => false, :normalize_whitespace => true }
+    DEFAULT_OPTS = { :element_order => false, :normalize_whitespace => true, :normalize_whitespace_cdata => false }
 
     # Determine if two XML documents or nodes are equivalent
     #
@@ -12,7 +14,8 @@ module EquivalentXml
     # @param [Nokogiri::XML::Node, Nokogiri::XML::NodeSet] node_2 The secton top-level XML node to compare
     # @param [Hash] opts Options that determine how certain comparisons are evaluated
     # @option opts [Boolean] :element_order (false) Child elements must occur in the same order to be considered equivalent
-    # @option opts [Boolean] :normalize_whitespace (true) Collapse whitespace within Text nodes before comparing
+    # @option opts [Boolean] :normalize_whitespace (true) Collapse whitespace without Text nodes before comparing
+    # @option opts [Boolean] :normalize_whitespace_cdata (false) Collapse whitespace in Text nodes before comparing
     # @option opts [String, Array] :ignore_content (nil) CSS selector(s) of nodes for which the content (text and child nodes) should be ignored when comparing for equivalence
     # @yield [n1,n2,result] The two nodes currently being evaluated, and whether they are considered equivalent. The block can return true or false to override the default evaluation
     # @return [Boolean] true or false
@@ -69,7 +72,7 @@ module EquivalentXml
     end
     
     def compare_text(node_1, node_2, opts, &block)
-      if opts[:normalize_whitespace]
+      if opts[:normalize_whitespace_cdata]
         node_1.text.strip.gsub(/\s+/,' ') == node_2.text.strip.gsub(/\s+/,' ')
       else
         node_1.text == node_2.text
