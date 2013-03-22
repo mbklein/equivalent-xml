@@ -21,7 +21,7 @@ EquivalentXml for Nokogiri
 [![Dependency Status](https://gemnasium.com/mbklein/equivalent-xml.png)](https://gemnasium.com/mbklein/equivalent-xml)
 
 ### Use
-    EquivalentXml.equivalent?(node_1, node_2, opts = { :element_order => false, :normalize_whitespace => true }) { |n1, n2, result| ... }
+    EquivalentXml.equivalent?(node_1, node_2, opts = { :element_order => false, :normalize_whitespace => true, :normalize_whitespace_cdata => false }) { |n1, n2, result| ... }
 
 node_1 and node_2 can be any Nokogiri::XML::Node descendants (or any string 
 containing an XML document or document fragment). The most common use case is 
@@ -67,7 +67,11 @@ considered equivalent.
 
     :normalize_whitespace => false
 
-Don't normalize whitespace within text nodes; require text nodes to 
+Don't normalize whitespace without text nodes.
+
+    :normalize_whitespace_cdata => false
+
+Don't normalize whitespace in text nodes; require text nodes to 
 match exactly.
 
     :ignore_content => ["Device > SerialNumber", "Device > ICCID"]
