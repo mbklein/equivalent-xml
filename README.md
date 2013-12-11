@@ -106,7 +106,8 @@ Chained modifiers:
 
 ## History
 
-- <b>0.3.0</b> - Added :ignore_content option (conrib. by moklett)
+- <b>0.4.0</b> - Added :ignore_attr_values option (contrib. by ivannovosad)
+- <b>0.3.0</b> - Added :ignore_content option (contrib. by moklett)
 - <b>0.2.9</b> - Fix for rspec-rails >= 2.7 (contrib. by jcoyne)
 - <b>0.2.8</b> - Allow comparison against nodesets (contrib. by gkellogg)
 - <b>0.2.7</b> - Auto-require RSpec matchers if RSpec is loaded
