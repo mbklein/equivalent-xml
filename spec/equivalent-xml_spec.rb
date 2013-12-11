@@ -207,4 +207,12 @@ describe EquivalentXml do
       doc1.should be_equivalent_to(doc2).ignoring_content_of(["SerialNumber", "ICCID"])
     end
   end
+
+  context "with :ignore_attr_values set to true" do
+    it "ignores the values of attributes when comparing for equivalence" do
+      doc1 = Nokogiri::XML("<doc xmlns='foo:bar'><first order='1'>foo  bar baz</first><second>things</second></doc>")
+      doc2 = Nokogiri::XML("<doc xmlns='foo:bar'><first order='2'>foo  bar baz</first><second>things</second></doc>")
+      doc1.should be_equivalent_to(doc2).ignoring_attr_values
+    end
+  end
 end
