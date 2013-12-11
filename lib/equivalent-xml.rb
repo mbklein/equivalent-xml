@@ -4,7 +4,7 @@ module EquivalentXml
 
   class << self
     
-    DEFAULT_OPTS = { :element_order => false, :normalize_whitespace => true }
+    DEFAULT_OPTS = { :ignore_attr_values => false, :element_order => false, :normalize_whitespace => true }
 
     # Determine if two XML documents or nodes are equivalent
     #
@@ -65,7 +65,14 @@ module EquivalentXml
     end
     
     def compare_attributes(node_1, node_2, opts, &block)
-      (node_1.name == node_2.name) && (node_1.value == node_2.value)
+
+      attr_names_match = node_1.name == node_2.name
+
+      if opts[:ignore_attr_values]
+        attr_names_match
+      else
+        attr_names_match && (node_1.value == node_2.value)
+      end
     end
     
     def compare_text(node_1, node_2, opts, &block)
