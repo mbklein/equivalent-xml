@@ -45,6 +45,10 @@ module EquivalentXml::RSpecMatchers
     chain :ignoring_content_of do |paths|
       @opts[:ignore_content] = paths
     end
+
+    chain :ignoring_attr_values do
+      @opts[:ignore_attr_values] = true
+    end
   
     failure_message_for_should do |actual|
       [ 'expected:', expected.to_s, 'got:', actual.to_s ].join("\n")
