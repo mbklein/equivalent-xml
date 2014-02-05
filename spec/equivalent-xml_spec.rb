@@ -197,6 +197,12 @@ describe EquivalentXml do
 
       doc1.should be_equivalent_to(doc2).ignoring_content_of("SerialNumber")
     end
+    
+    it "is able to ignore nodes with xmlns attribute set" do
+      doc1 = Nokogiri::XML('<a xmlns=""></a>')
+      doc2 = Nokogiri::XML('<a xmlns=""></a>')
+      doc1.should be_equivalent_to(doc2).ignoring_content_of("a")
+    end
   end
 
   context "with the :ignore_content_paths option set to an array of CSS selectors" do
