@@ -201,7 +201,7 @@ describe EquivalentXml do
     it "is able to ignore nodes with xmlns attribute set" do
       doc1 = Nokogiri::XML('<a xmlns=""></a>')
       doc2 = Nokogiri::XML('<a xmlns=""></a>')
-      doc1.should be_equivalent_to(doc2).ignoring_content_of("a")
+      doc1.should be_equivalent_to(doc2).ignoring_content_of("//a")
     end
   end
 
