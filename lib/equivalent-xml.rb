@@ -1,3 +1,4 @@
+require 'equivalent-xml/version'
 require 'nokogiri'
 
 module EquivalentXml
