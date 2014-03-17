@@ -7,9 +7,9 @@ end
 
 module EquivalentXml::RSpecMatchers
 
-  if defined?(::RSpec)
+  if defined?(::RSpec::Matchers)
     rspec_namespace = ::RSpec::Matchers
-  elsif defined?(::Spec)
+  elsif defined?(::Spec::Matchers)
     rspec_namespace = ::Spec::Matchers
   else
     raise NameError, "Cannot find Spec (rspec 1.x) or RSpec (rspec 2.x)"

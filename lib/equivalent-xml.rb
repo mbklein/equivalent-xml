@@ -194,6 +194,6 @@ module EquivalentXml
 
 end
 
-if defined?(::RSpec) or defined?(::Spec)
+if defined?(::RSpec::Matchers) or defined?(::Spec::Matchers)
   require 'equivalent-xml/rspec_matchers'
 end
