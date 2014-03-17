@@ -4,6 +4,7 @@ if defined?(RUBY_ENGINE) and (RUBY_ENGINE == 'ruby') and (RUBY_VERSION >= '1.9')
 end
 $:.push(File.join(File.dirname(__FILE__),'..','lib'))
 require 'nokogiri'
+require 'rspec/matchers'
 require 'equivalent-xml'
 
 describe EquivalentXml do
