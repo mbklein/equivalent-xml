@@ -1,7 +1,7 @@
 require 'equivalent-xml'
 
 begin
-  require 'rspec-expectations'
+  require 'rspec/expectations'
 rescue LoadError
 end
 
