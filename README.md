@@ -106,6 +106,7 @@ Chained modifiers:
 
 ## History
 
+- <b>0.4.3</b> - Updates for rspec 3
 - <b>0.4.2</b> - Move version back into gemspec for now
 - <b>0.4.1</b> - Improved RSpec version checking (contrib. by elandesign)
 - <b>0.4.0</b> - Added :ignore_attr_values option (contrib. by ivannovosad)
