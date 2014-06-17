@@ -90,15 +90,15 @@ require 'equivalent-xml'
 
 Equivalency:
 
-    node_1.should be_equivalent_to(node_2)
-    node_1.should_not be_equivalent_to(node_2)
+    expect(node_1).to be_equivalent_to(node_2)
+    expect(node_1).not_to be_equivalent_to(node_2)
 
 Chained modifiers:
 
-    node_1.should be_equivalent_to(node_2).respecting_element_order
-    node_1.should be_equivalent_to(node_2).with_whitespace_intact
-    node_1.should be_equivalent_to(node_2).respecting_element_order.with_whitespace_intact
-    node_1.should be_equivalent_to(node_2).ignoring_content_of("SerialNumber")
+    expect(node_1).to be_equivalent_to(node_2).respecting_element_order
+    expect(node_1).to be_equivalent_to(node_2).with_whitespace_intact
+    expect(node_1).to be_equivalent_to(node_2).respecting_element_order.with_whitespace_intact
+    expect(node_1).to be_equivalent_to(node_2).ignoring_content_of("SerialNumber")
 
 ## Contributing to equivalent-xml
  
