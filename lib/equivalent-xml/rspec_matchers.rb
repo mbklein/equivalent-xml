@@ -50,13 +50,15 @@ module EquivalentXml::RSpecMatchers
       opts[:ignore_attr_values] = true
     end
 
-    failure_message_for_should do |actual|
+    failure_message do |actual|
       [ 'expected:', expected.to_s, 'got:', actual.to_s ].join("\n")
     end
+    alias failure_message_for_should failure_message
 
-    failure_message_for_should_not do |actual|
+    failure_message_when_negated do |actual|
       [ 'expected:', actual.to_s, 'not to be equivalent to:', expected.to_s ].join("\n")
     end
+    alias negative_failure_message failure_message_when_negated
   end
 
 end
