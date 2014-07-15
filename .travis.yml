@@ -5,6 +5,10 @@ rvm:
   - 2.1.0
   - jruby-18mode
   - jruby-19mode
+gemfile:
+  - gemfiles/Gemfile.rspec-1.x
+  - gemfiles/Gemfile.rspec-2.x
+  - gemfiles/Gemfile.rspec-3.x
 env:
   global:
     - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
