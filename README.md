@@ -113,6 +113,7 @@ Chained modifiers:
 
 ## History
 
+- <b>0.4.4</b> - Fix rspec 3 deprecation warnings while maintaining compatibility with rspec 1 & 2 (w/assist from barelyknown & DanielHeath)
 - <b>0.4.3</b> - Updates for rspec 3
 - <b>0.4.2</b> - Move version back into gemspec for now
 - <b>0.4.1</b> - Improved RSpec version checking (contrib. by elandesign)
@@ -138,5 +139,4 @@ Chained modifiers:
 
 ## Copyright
 
-Copyright (c) 2011 Michael B. Klein. See LICENSE.txt for further details.
-
+Copyright (c) 2011-14 Michael B. Klein. See LICENSE.txt for further details.
