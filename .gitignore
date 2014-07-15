@@ -42,3 +42,4 @@ pkg
 #*.swp
 /*.gem
 Gemfile.lock
+gemfiles/*.lock
