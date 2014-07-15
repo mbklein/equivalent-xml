@@ -35,4 +35,3 @@ Gem::Specification.new do |s|
   s.add_development_dependency(%q<rake>, [">= 0.9.0"])
   s.add_development_dependency(%q<rdoc>, [">= 3.12"])
 end
-

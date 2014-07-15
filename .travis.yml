@@ -6,7 +6,6 @@ rvm:
   - jruby-18mode
   - jruby-19mode
 gemfile:
-  - gemfiles/Gemfile.rspec-1.x
   - gemfiles/Gemfile.rspec-2.x
   - gemfiles/Gemfile.rspec-3.x
 env:
