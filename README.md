@@ -113,6 +113,7 @@ Chained modifiers:
 
 ## History
 
+- <b>0.4.4</b> - Allow to compare XML-Fragments in Strings
 - <b>0.4.3</b> - Updates for rspec 3
 - <b>0.4.2</b> - Move version back into gemspec for now
 - <b>0.4.1</b> - Improved RSpec version checking (contrib. by elandesign)

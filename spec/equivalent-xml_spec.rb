@@ -216,4 +216,13 @@ describe EquivalentXml do
       expect(doc1).to be_equivalent_to(doc2).ignoring_attr_values
     end
   end
+
+  context "(on fragments consisting of multiple nodes)" do
+    it "should compare all nodes" do
+      doc1 = "<h1>Headline</h1><h1>Headline</h1>"
+      doc2 = "<h1>Headline</h1><h2>Headline2</h2>"
+      expect(doc1).not_to be_equivalent_to(doc2)
+    end
+  end
+
 end
