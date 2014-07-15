@@ -156,8 +156,8 @@ module EquivalentXml
       if data.respond_to?(:node_type)
         return data
       else
-        result = Nokogiri::XML(data)
-        if result.root.nil?
+        result = Nokogiri::XML.fragment(data)
+        if result.respond_to?(:root) && result.root.nil?
           return data
         else
           return result
