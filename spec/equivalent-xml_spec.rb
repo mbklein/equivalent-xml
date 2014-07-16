@@ -198,6 +198,13 @@ describe EquivalentXml do
 
       expect(doc1).to be_equivalent_to(doc2).ignoring_content_of("SerialNumber")
     end
+
+    it "should properly compare a document to a string" do
+      doc1 = '<test_document><foo/><test_xml/></test_document>'
+      doc2 = Nokogiri::XML doc1
+      expect(doc1).to be_equivalent_to(doc2)
+      expect(doc2).to be_equivalent_to(doc1)
+    end
   end
 
   context "with the :ignore_content_paths option set to an array of CSS selectors" do

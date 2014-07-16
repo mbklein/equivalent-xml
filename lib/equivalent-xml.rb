@@ -21,6 +21,9 @@ module EquivalentXml
       if [node_1, node_2].any? { |node| node.is_a?(Nokogiri::XML::NodeSet)}
         self.compare_nodesets(as_nodeset(node_1, opts), as_nodeset(node_2, opts), opts, &block)
       else
+        # Don't let one node to coerced to a DocumentFragment if the other one is a Document
+        node_2 = Nokogiri::XML(node_2) if node_1.is_a?(Nokogiri::XML::Document) and !node_2.is_a?(Nokogiri::XML::Node)
+        node_1 = Nokogiri::XML(node_1) if node_2.is_a?(Nokogiri::XML::Document) and !node_1.is_a?(Nokogiri::XML::Node)
         self.compare_nodes(as_node(node_1), as_node(node_2), opts, &block)
       end
     end
