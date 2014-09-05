@@ -1,4 +1,4 @@
-require 'equivalent-xml'
+require 'equivalent-xml' unless defined?(::EquivalentXml)
 
 begin
   require 'rspec/expectations'
