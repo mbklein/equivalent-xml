@@ -14,10 +14,7 @@ end
 require 'rake'
 
 require 'rspec/core/rake_task'
-RSpec::Core::RakeTask.new do |t|
-  t.pattern = FileList['./spec/**/*_spec.rb']
-end
-  
+RSpec::Core::RakeTask.new
 task :default => :spec
 
 Rake::RDocTask.new do |rdoc|
