@@ -224,6 +224,26 @@ describe EquivalentXml do
     end
   end
 
+  context 'with :ignore_attr_values receiving specific attributes to ignore' do
+    it 'ignores the value of one specified attribute, but verifies the other, when comparing for equivalence' do
+      doc1 = Nokogiri::XML("<doc xmlns='foo:bar'><first order='1' status='on'>foo  bar baz</first><second>things</second></doc>")
+      doc2 = Nokogiri::XML("<doc xmlns='foo:bar'><first order='2' status='off'>foo  bar baz</first><second>things</second></doc>")
+      expect(doc1).not_to be_equivalent_to(doc2).ignoring_attr_values( 'order' )
+    end
+
+    it 'ignores the value of one specified attribute, but verifies the other, when comparing for equivalence' do
+      doc1 = Nokogiri::XML("<doc xmlns='foo:bar'><first order='1' status='on'>foo  bar baz</first><second>things</second></doc>")
+      doc2 = Nokogiri::XML("<doc xmlns='foo:bar'><first order='2' status='on'>foo  bar baz</first><second>things</second></doc>")
+      expect(doc1).to be_equivalent_to(doc2).ignoring_attr_values( 'order' )
+    end
+
+    it 'ignores the values of both specified attributes when comparing for equivalence' do
+      doc1 = Nokogiri::XML("<doc xmlns='foo:bar'><first order='1' status='on'>foo  bar baz</first><second>things</second></doc>")
+      doc2 = Nokogiri::XML("<doc xmlns='foo:bar'><first order='2' status='off'>foo  bar baz</first><second>things</second></doc>")
+      expect(doc1).to be_equivalent_to(doc2).ignoring_attr_values( 'order', 'status' )
+    end
+  end
+
   context "(on fragments consisting of multiple nodes)" do
     it "should compare all nodes" do
       doc1 = "<h1>Headline</h1><h1>Headline</h1>"
