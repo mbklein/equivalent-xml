@@ -46,8 +46,8 @@ module EquivalentXml::RSpecMatchers
       opts[:ignore_content] = paths
     end
 
-    chain :ignoring_attr_values do
-      opts[:ignore_attr_values] = true
+    chain :ignoring_attr_values do |*attrs|
+      opts[:ignore_attr_values] = attrs
     end
 
     should_message = lambda do |actual|

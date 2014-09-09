@@ -71,7 +71,9 @@ module EquivalentXml
 
       attr_names_match = node_1.name == node_2.name
 
-      if opts[:ignore_attr_values]
+      ignore_attrs = opts[ :ignore_attr_values ]
+
+      if ignore_attrs && (ignore_attrs.empty? || ignore_attrs.include?( node_1.name ))
         attr_names_match
       else
         attr_names_match && (node_1.value == node_2.value)
