@@ -12,7 +12,7 @@ module EquivalentXml::RSpecMatchers
   elsif defined?(::Spec::Matchers)
     rspec_namespace = ::Spec::Matchers
   else
-    raise NameError, "Cannot find Spec (rspec 1.x) or RSpec (rspec 2.x)"
+    raise NameError, "Cannot find Spec (rspec 1.x) or RSpec (rspec 2+)"
   end
 
   # Determine if the receiver is equivalent to the argument as defined
@@ -50,21 +50,17 @@ module EquivalentXml::RSpecMatchers
       opts[:ignore_attr_values] = attrs
     end
 
-    should_message = lambda do |actual|
+    failure_message do |actual|
       [ 'expected:', expected.to_s, 'got:', actual.to_s ].join("\n")
     end
 
-    should_not_message = lambda do |actual|
+    failure_message_when_negated do |actual|
       [ 'expected:', actual.to_s, 'not to be equivalent to:', expected.to_s ].join("\n")
     end
     
-    if respond_to?(:failure_message_when_negated)
-      failure_message &should_message
-      failure_message_when_negated &should_not_message
-    else
-      failure_message_for_should &should_message
-      failure_message_for_should_not &should_not_message
-    end
+    # rspec 2.x compatibility
+    alias_method :failure_message_for_should, :failure_message
+    alias_method :failure_message_for_should_not, :failure_message_when_negated
   end
 
 end
