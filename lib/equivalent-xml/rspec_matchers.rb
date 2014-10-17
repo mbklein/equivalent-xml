@@ -65,6 +65,8 @@ module EquivalentXml::RSpecMatchers
       failure_message_for_should &should_message
       failure_message_for_should_not &should_not_message
     end
+
+    diffable
   end
 
 end
