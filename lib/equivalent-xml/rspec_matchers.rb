@@ -1,4 +1,4 @@
-require 'equivalent-xml'
+require 'equivalent-xml' unless defined?(::EquivalentXml)
 
 begin
   require 'rspec/expectations'
@@ -59,11 +59,11 @@ module EquivalentXml::RSpecMatchers
     end
     
     if respond_to?(:failure_message_when_negated)
-      failure_message &should_message
-      failure_message_when_negated &should_not_message
+      failure_message(&should_message)
+      failure_message_when_negated(&should_not_message)
     else
-      failure_message_for_should &should_message
-      failure_message_for_should_not &should_not_message
+      failure_message_for_should(&should_message)
+      failure_message_for_should_not(&should_not_message)
     end
 
     diffable
