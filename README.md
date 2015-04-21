@@ -113,6 +113,7 @@ Chained modifiers:
 
 ## History
 
+- <b>0.6.0</b> - Add ability to ignore specific attributes (from paclough); remove circular dependencies (nbibler); Simplify compatibility workaround for message methods (jirutka)
 - <b>0.5.1</b> - Fix false negative when comparing a Nokogiri::XML::Node to a string (introduced in 0.5.0)
 - <b>0.5.0</b> - Allow to compare XML-Fragments in Strings (contrib. by webmasters)
 - <b>0.4.4</b> - Fix rspec 3 deprecation warnings while maintaining compatibility with rspec 1 & 2 (w/assist from barelyknown & DanielHeath)
