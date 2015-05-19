@@ -190,7 +190,7 @@ module EquivalentXml
       return false if ignore_list.empty?
 
       ignore_list.each do |selector|
-        return true if node.document.css(selector).include?(node)
+        return true if node.document.search(selector).include?(node)
       end
 
       return false
