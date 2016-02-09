@@ -51,7 +51,7 @@ module EquivalentXml::RSpecMatchers
     end
 
     should_message = lambda do |actual|
-      [ 'expected:', expected.to_s, 'got:', actual.to_s ].join("\n")
+		[ 'expected:', expected.to_s, 'got:', actual.to_s, 'messages:', EquivalentXml.messages.inspect ].join("\n")
     end
 
     should_not_message = lambda do |actual|
