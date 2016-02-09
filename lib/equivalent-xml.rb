@@ -15,8 +15,15 @@ module EquivalentXml
     # @option opts [Boolean] :normalize_whitespace (true) Collapse whitespace within Text nodes before comparing
     # @option opts [String, Array] :ignore_content (nil) CSS selector(s) of nodes for which the content (text and child nodes) should be ignored when comparing for equivalence
     # @yield [n1,n2,result] The two nodes currently being evaluated, and whether they are considered equivalent. The block can return true or false to override the default evaluation
+	# @reader messages [Hash] Contains information about the reason why the two nodes are not the same
     # @return [Boolean] true or false
+	attr_reader :messages
+
+	def messages
+		@messages
+	end
     def equivalent?(node_1, node_2, opts = {}, &block)
+	  @messages = {}
       opts = DEFAULT_OPTS.merge(opts)
       if [node_1, node_2].any? { |node| node.is_a?(Nokogiri::XML::NodeSet)}
         self.compare_nodesets(as_nodeset(node_1, opts), as_nodeset(node_2, opts), opts, &block)
@@ -114,25 +121,33 @@ module EquivalentXml
       local_set_1 = nodeset_1.dup
       local_set_2 = nodeset_2.dup
       
-      if local_set_1.length != local_set_2.length
-        return false
-      end
+      # we need to continue to find the differences
     
       local_set_1.each do |search_node|
         found_node = local_set_2.find { |test_node| self.equivalent?(search_node,test_node,opts,&block) }
 
         if found_node.nil?
+          @messages[:missing] ||= []
+          @messages[:missing].push("source node #{search_node.to_s} not found")
           return false
         else
           if search_node.is_a?(Nokogiri::XML::Element) and opts[:element_order]
             if search_node.parent.elements.index(search_node) != found_node.parent.elements.index(found_node)
+              @messages[:order] ||= []
+              @messages[:order].push("source node #{search_node.to_s} is in different order")
               return false
             end
           end
           local_set_2.delete(found_node)
         end
       end
-      return local_set_2.length == 0
+      if local_set_2.length == 0
+        return true
+      else
+        @messages[:missing] ||= []
+        local_set_2.each{|n| @messages[:missing].push(n.to_s)}
+        return false
+      end
     end
 
     # Determine if two nodes are in the same effective Namespace
