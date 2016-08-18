@@ -86,7 +86,7 @@ module EquivalentXml
         end
       end
       if block_given?
-        block_result = yield(node_1, node_2, result)
+        block_result = yield(node_1.thing, node_2.thing, result)
         if block_result.is_a?(TrueClass) or block_result.is_a?(FalseClass)
           result = block_result
         end
