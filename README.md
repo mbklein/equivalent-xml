@@ -15,7 +15,7 @@ Testing XML output is difficult:
 
 ### Solution
 
-EquivalentXml for Nokogiri
+EquivalentXml - Now for [Nokogiri](www.rubydoc.info/gems/nokogiri) and [Oga](www.rubydoc.info/gems/oga)!
 
 [![Build Status](https://secure.travis-ci.org/mbklein/equivalent-xml.png)](http://travis-ci.org/mbklein/equivalent-xml)
 [![Dependency Status](https://gemnasium.com/mbklein/equivalent-xml.png)](https://gemnasium.com/mbklein/equivalent-xml)
@@ -23,9 +23,9 @@ EquivalentXml for Nokogiri
 ### Use
     EquivalentXml.equivalent?(node_1, node_2, opts = { :element_order => false, :normalize_whitespace => true }) { |n1, n2, result| ... }
 
-node_1 and node_2 can be any Nokogiri::XML::Node descendants (or any string 
-containing an XML document or document fragment). The most common use case is 
-to compare two Nokogiri::XML::Document instances.
+node_1 and node_2 can be any Node descendants (or any string containing an XML 
+document or document fragment). The most common use case is to compare two Document 
+instances. 
 
 node_1 is equivalent to node_2 if and only if:
 
@@ -113,6 +113,7 @@ Chained modifiers:
 
 ## History
 
+- <b>1.0.0</b> - Added Oga support! Without breaking Nokogiri support!
 - <b>0.6.0</b> - Add ability to ignore specific attributes (from paclough); remove circular dependencies (nbibler); Simplify compatibility workaround for message methods (jirutka)
 - <b>0.5.1</b> - Fix false negative when comparing a Nokogiri::XML::Node to a string (introduced in 0.5.0)
 - <b>0.5.0</b> - Allow to compare XML-Fragments in Strings (contrib. by webmasters)
@@ -142,4 +143,4 @@ Chained modifiers:
 
 ## Copyright
 
-Copyright (c) 2011-14 Michael B. Klein. See LICENSE.txt for further details.
+Copyright (c) 2011-16 Michael B. Klein. See LICENSE.txt for further details.

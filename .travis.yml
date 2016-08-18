@@ -3,8 +3,10 @@ rvm:
   - 1.9.3
   - 2.0.0
   - 2.1.0
-  - jruby-18mode
+  - 2.2.0
+  - 2.3.0
   - jruby-19mode
+  - jruby-head
 gemfile:
   - gemfiles/Gemfile.rspec-2.x
   - gemfiles/Gemfile.rspec-3.x
