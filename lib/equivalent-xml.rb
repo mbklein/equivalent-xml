@@ -1,5 +1,6 @@
 require 'equivalent-xml/node_type'
-Dir[File.expand_path('../equivalent-xml/proxy/*',__FILE__)].each { |file| require file }
+require 'equivalent-xml/proxy/nokogiri'
+require 'equivalent-xml/proxy/oga'
 
 module EquivalentXml
   class << self

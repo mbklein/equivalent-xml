@@ -1,3 +1,5 @@
+require 'equivalent-xml/proxy/base'
+
 module EquivalentXml
   module Proxy
     class Nokogiri < Base
