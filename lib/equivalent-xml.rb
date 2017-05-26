@@ -1,9 +1,11 @@
 require 'equivalent-xml/node_type'
-Dir[File.expand_path('../equivalent-xml/proxy/*',__FILE__)].each { |file| require file }
+require 'equivalent-xml/proxy/base'
+require 'equivalent-xml/proxy/nokogiri'
+require 'equivalent-xml/proxy/oga'
 
 module EquivalentXml
   class << self
-    
+
     # Determine if two XML documents or nodes are equivalent
     #
     # @param [Node, NodeSet] node_1 The first top-level XML node to compare
@@ -23,9 +25,9 @@ module EquivalentXml
     def proxy_classes
       ObjectSpace.each_object(Proxy::Base.singleton_class).to_a.reject { |klass| not klass.present? }
     end
-    
+
     def processor_for(*args)
-      proxies = args.collect do |thing| 
+      proxies = args.collect do |thing|
         driver = thing.class.name.split(/::/).first.to_sym
         proxy_classes.find { |klass| klass.driver_name == driver }
       end
@@ -36,18 +38,18 @@ module EquivalentXml
       Processor.new(proxies.first || proxy_classes.first)
     end
   end
-  
+
   class Processor
     DEFAULT_OPTS = { :ignore_attr_values => false, :element_order => false, :normalize_whitespace => true }
 
     def initialize(proxy_class)
       @proxy_class = proxy_class
     end
-    
+
     def proxy(obj)
       @proxy_class.proxy(obj)
     end
-    
+
     def equivalent?(node_1, node_2, opts = {}, &block)
       node_1 = proxy(node_1)
       node_2 = proxy(node_2)
@@ -97,11 +99,11 @@ module EquivalentXml
     def compare_documents(node_1, node_2, opts, &block)
       self.equivalent?(node_1.root,node_2.root,opts,&block)
     end
-    
+
     def compare_elements(node_1, node_2, opts, &block)
       (node_1.name == node_2.name) && self.compare_children(node_1,node_2,opts,&block)
     end
-    
+
     def compare_attributes(node_1, node_2, opts, &block)
 
       attr_names_match = node_1.name == node_2.name
@@ -114,7 +116,7 @@ module EquivalentXml
         attr_names_match && (node_1.value == node_2.value)
       end
     end
-    
+
     def compare_text(node_1, node_2, opts, &block)
       if opts[:normalize_whitespace]
         node_1.text.strip.gsub(/\s+/,' ') == node_2.text.strip.gsub(/\s+/,' ')
@@ -122,11 +124,11 @@ module EquivalentXml
         node_1.text == node_2.text
       end
     end
-    
+
     def compare_cdata(node_1, node_2, opts, &block)
       node_1.text == node_2.text
     end
-    
+
     def compare_children(node_1, node_2, opts, &block)
       if ignore_content?(node_1, opts)
         # Stop recursion and state a match on the children
@@ -136,7 +138,7 @@ module EquivalentXml
         nodeset_2 = as_nodeset(node_2.children, opts)
         result = self.compare_nodesets(nodeset_1,nodeset_2,opts,&block)
       end
-      
+
       if node_1.has_attributes?
         attributes_1 = node_1.attributes.reject { |a| a.name =~ /^xmlns/ }
         attributes_2 = node_2.attributes.reject { |a| a.name =~ /^xmlns/ }
@@ -144,15 +146,15 @@ module EquivalentXml
       end
       result
     end
-    
+
     def compare_nodesets(nodeset_1, nodeset_2, opts, &block)
       local_set_1 = nodeset_1.dup
       local_set_2 = nodeset_2.dup
-      
+
       if local_set_1.length != local_set_2.length
         return false
       end
-    
+
       local_set_1.each do |search_node|
         found_node = local_set_2.find { |test_node| self.equivalent?(search_node,test_node,opts,&block) }
 
@@ -183,16 +185,16 @@ module EquivalentXml
       # they do. And they're invisible. And they get corrupted easily.
       # So let's wilfully ignore them. And while we're at it, let's
       # ignore any class that doesn't know it has a namespace.
-      if args.all? { |node| not node.is_namespaced? } or 
+      if args.all? { |node| not node.is_namespaced? } or
          args.any? { |node| node.is_character_data? }
            return true
       end
-      
+
       href1 = node_1.namespace_uri || ''
       href2 = node_2.namespace_uri || ''
       return href1 == href2
     end
-    
+
     private
     def as_node(data)
       if data.respond_to?(:node_type)
@@ -206,7 +208,7 @@ module EquivalentXml
         end
       end
     end
-    
+
     def as_nodeset(data, opts = {})
       ignore_proc = lambda do |child|
         child.node_type == NodeType::COMMENT_NODE ||
@@ -215,7 +217,7 @@ module EquivalentXml
       end
 
       data = proxy(data)
-      
+
       content = if data.is_nodeset?
         data.reject { |child| ignore_proc.call(proxy(child)) }
       else
