@@ -238,6 +238,12 @@ describe "EquivalentXml (Nokogiri)" do
       doc2 = Nokogiri::XML("<doc xmlns='foo:bar'><first order='2' status='off' changed='no'>foo  bar baz</first><second>things</second></doc>")
       expect(doc1).to be_equivalent_to(doc2).ignoring_attr_values( 'order', 'status' )
     end
+
+    it 'works with dashed attributes' do
+      doc1 = Nokogiri::XML("<input class='btn btn-default' name='commit' type='submit' value='Create User'/>")
+      doc2 = Nokogiri::XML("<input class='btn btn-default' data-disable-with='Create User' name='commit' type='submit' value='Create User'/>")
+      expect(doc1).to be_equivalent_to(doc2).ignoring_attr_values( 'data-disable-with' )
+    end
   end
 
   context "(on fragments consisting of multiple nodes)" do
