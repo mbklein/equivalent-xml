@@ -15,7 +15,7 @@ Testing XML output is difficult:
 
 ### Solution
 
-EquivalentXml - Now for [Nokogiri](www.rubydoc.info/gems/nokogiri) and [Oga](www.rubydoc.info/gems/oga)!
+EquivalentXml - Now for [Nokogiri](https://github.com/sparklemotion/nokogiri) and [Oga](https://gitlab.com/yorickpeterse/oga)!
 
 [![Build Status](https://secure.travis-ci.org/mbklein/equivalent-xml.png)](http://travis-ci.org/mbklein/equivalent-xml)
 [![Dependency Status](https://gemnasium.com/mbklein/equivalent-xml.png)](https://gemnasium.com/mbklein/equivalent-xml)
